@@ -31,7 +31,7 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        ArrayList<String> values = new ArrayList<>();
+        ArrayList<String> values = new ArrayList<String>();
 
         for (HashMap<String, String> row : allJobs) {
             String aValue = row.get(field);
@@ -40,6 +40,8 @@ public class JobData {
                 values.add(aValue);
             }
         }
+//        sort results alphabetically
+        Collections.sort(values);
 
         return values;
     }
