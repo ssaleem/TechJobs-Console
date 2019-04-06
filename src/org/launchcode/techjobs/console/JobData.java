@@ -88,6 +88,40 @@ public class JobData {
     }
 
     /**
+     * Returns results of searching the jobs data by value, value is
+     * searched in all columns
+     * @param value Value to search for across all columns
+     * @return List of all jobs matching the value in any field/column
+     */
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value){
+
+        // load data, if not already loaded
+        loadData();
+
+        // case-insensitive matching
+        value = value.toLowerCase();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        for(HashMap<String, String> job: allJobs){
+
+            //  iterate through each column of a particular job
+            for(String jobFieldValue: job.values()){
+
+                if(jobFieldValue.toLowerCase().contains(value)){
+                    jobs.add(job);
+
+                    //  break loop to avoid adding same row again in
+                    //  case there is value match in multiple columns
+                    break;
+                }
+            }
+        }
+
+        return jobs;
+    }
+
+    /**
      * Read in data from a CSV file and store it in a list
      */
     private static void loadData() {
