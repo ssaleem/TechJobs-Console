@@ -51,7 +51,7 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        return allJobs;
+        return deepCloneJobs();
     }
 
     /**
@@ -128,25 +128,30 @@ public class JobData {
         }
     }
 
-    public static ArrayList<HashMap<String, String>> findByValue(String value){
+    /**
+     * Creates a deep copy of allJobs static field to prevent
+     * modification from any consumer class
+     * deep copy: recursively copy objects until you reach immutable or
+     * primitive types
+     * @return a List containing deep clone of allJobs static field
+     */
 
-        // load data, if not already loaded
-        loadData();
+    private static ArrayList<HashMap<String, String>> deepCloneJobs(){
 
-        value = value.toLowerCase();
+        // create new list of job entries
+        ArrayList<HashMap<String, String>> jobsCopy = new ArrayList<HashMap<String, String>>();
 
-        ArrayList<HashMap<String, String>> someJobs = new ArrayList<>();
         for(HashMap<String, String> job: allJobs){
 
-            for(String jobFieldValue: job.values()){
-                if(jobFieldValue.toLowerCase().contains(value)){
-                    someJobs.add(job);
-                    break;
-                }
+            // create new job entry to store immutable strings
+            HashMap<String, String> jobCopy = new HashMap<>();
+            for(Map.Entry<String, String> jobFieldEntry: job.entrySet()){
+                jobCopy.put(jobFieldEntry.getKey(), jobFieldEntry.getValue());
             }
+            jobsCopy.add(jobCopy);
         }
-
-        return someJobs;
+        return jobsCopy;
     }
+
 
 }
